@@ -3,7 +3,8 @@
 $uni = $_POST['uni'];
 json_decode($uni);
 
-$uid = $_POST['uid'];
+//$uid = $_POST['uid'];
+$uid = rand(100000,9999999);
 json_decode($uid);
 
 $size = getimagesize('./input/input.jpeg');
@@ -28,4 +29,9 @@ $path_parts = pathinfo('./output/output.jpeg');
 
 $file_path = $path_parts['dirname']."/".$path_parts['basename'];
 
-echo "http://support.moraspirit.com/output/output".$uid.".jpeg";
+$json_obj = new \stdClass();
+$json_obj->uid = $uid;
+$json_obj->image = 'http://support.moraspirit.com/output/output'.$uid.'.jpeg';
+$strJSON = json_encode($json_obj);
+//echo "http://support.moraspirit.com/output/output".$uid.".jpeg";
+echo $strJSON;
