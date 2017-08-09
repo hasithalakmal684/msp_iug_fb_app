@@ -129,7 +129,7 @@ $WAY_percentage = ($WAY*100)/$tot_count;
     </style>
 </head>
 <body class="container-fluid" onload="login();">
-
+<?php include_once("analyticstracking.php") ?>
 <nav id="mainNav" class="navbar navbar-default navbar-custom navbar-fixed-top">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->

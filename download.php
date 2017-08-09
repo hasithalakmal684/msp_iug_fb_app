@@ -7,7 +7,16 @@ if(file_exists($file_path)) {
     header("Content-disposition: attachment; filename=".$pid.".jpeg");
     header('Content-type: application/octet-stream');
     readfile($file_path);
-    unlink($file_path);
+    $files = glob("./output/*");
+	$now   = time();
+
+	foreach ($files as $file) {
+		if (is_file($file)) {
+			if ($now - filemtime($file) >= 60 * 60 * 24 * 2) { // 2 days
+				unlink($file);
+			}
+		}
+	}
     $msg = "Thank you for supporting Inter University Games 2017. Click below button to see whats happen on IUG 2017.";
     $link='http://sports.moraspirit.com/';
 }else {
@@ -45,7 +54,9 @@ if(file_exists($file_path)) {
         }
     </style>
 </head>
+
 <body class="container-fluid" ">
+<?php include_once("analyticstracking.php") ?>
     <div class="row text-center" id="count_div" style="margin-top: 150px;display: block">
         <div class="btn btn-primary" style="background-color: #3b5998;margin-bottom: 50px">
             <label style="font-family: Tahoma; font-size: 20px"><?php echo $msg;?></label>
