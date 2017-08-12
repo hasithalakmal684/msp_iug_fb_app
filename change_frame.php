@@ -53,7 +53,7 @@
                     FB.api('/'+userID+'/picture?type=large&height=720&width=720', function (response2) {
                         image_url = response2.data.url;
                         $.ajax({url: url + "/save_image.php",
-                            data: {"url": image_url},
+                            data: {"url": image_url,"uid":userID},
                             type: 'post',
                             success: function (output) {
                                 console.log("Save success : "+output);
@@ -61,28 +61,20 @@
                                     type: 'post',
                                     data:{"uni": uni,"uid":userID},
                                     success: function (output2) {
-										console.log("Merge success :"+output2);
-										var json = JSON.parse(output2);
+                    										console.log("Merge success :"+output2);
+                    										var json = JSON.parse(output2);
                                         console.log("Merge success :"+json["uid"]);
                                         FB.ui({
-                                            /*method: "feed",
-                                            name: "Inter University Games 2017",
-                                            link: "http://support.moraspirit.com/download.php?pid="+userID,
-                                            picture: output2,
-                                            caption: "Inter University Games 2017",
-                                            description: "Support Inter University Games 2017",
-                                            hashtag: "#inter_uni_games_2017",
-                                            mobile_iframe:true*/
-                                            method: 'share_open_graph',
-											action_type: 'og.shares',
-											action_properties: JSON.stringify({
-												object : {
-												   'og:url': 'http://support.moraspirit.com/download.php?pid='+json["uid"], // your url to share
-												   'og:title': 'Inter University Games 2017',
-												   'og:description': 'Support Inter University Games 2017',
-												   'og:image': json["image"]
-												}
-											})
+                                          method: 'share_open_graph',
+                    											action_type: 'og.shares',
+                    											action_properties: JSON.stringify({
+                    												object : {
+                    												   'og:url': url+'/download.php?pid='+json["uid"]+"&uid="+userID+"&tkn="+accessToken, // your url to share
+                    												   'og:title': 'Inter University Games 2017',
+                    												   'og:description': 'Support Inter University Games 2017',
+                    												   'og:image': json["image"]
+                    												}
+                    											})
                                         }, function(response){
                                             $('#photoModal').modal('toggle');
                                             $.ajax({
@@ -93,7 +85,7 @@
                                                     console.log(d);
                                                 }
                                             });
-                                            window.location.href="http://support.moraspirit.com";
+                                            window.location.href=url;
                                         });
                                     },
                                     error:function(error){
@@ -109,7 +101,7 @@
 
                 } else {
                     FB.login(function (response) {
-                        window.location.href="http://support.moraspirit.com/change_frame.php";
+                        window.location.href=url+"/change_frame.php";
                     });
                 }
             });

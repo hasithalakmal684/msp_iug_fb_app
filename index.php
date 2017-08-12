@@ -107,7 +107,8 @@ $WAY_percentage = ($WAY*100)/$tot_count;
 
                 } else {
                     FB.login(function (response) {
-                        window.location.href = url+"/change_frame.php";
+                        //window.location.href = url+"/change_frame.php";
+                        window.location.href = url;
                     }, {
                         scope: 'public_profile',
                         return_scopes: true
@@ -115,7 +116,6 @@ $WAY_percentage = ($WAY*100)/$tot_count;
                 }
             });
         }
-        login();
     </script>
 
     <style>
@@ -128,7 +128,7 @@ $WAY_percentage = ($WAY*100)/$tot_count;
         }
     </style>
 </head>
-<body class="container-fluid" onload="login();">
+<body class="container-fluid">
 <?php include_once("analyticstracking.php") ?>
 <nav id="mainNav" class="navbar navbar-default navbar-custom navbar-fixed-top">
     <div class="container">

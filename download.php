@@ -1,30 +1,9 @@
 <?php
 $pid = $_GET['pid'];
-$file_path = './output/output'.$pid.'.jpeg';
-$msg = '';
-$link = '';
-if(file_exists($file_path)) {
-    header("Content-disposition: attachment; filename=".$pid.".jpeg");
-    header('Content-type: application/octet-stream');
-    readfile($file_path);
-    $files = glob("./output/*");
-	$now   = time();
-
-	foreach ($files as $file) {
-		if (is_file($file)) {
-			if ($now - filemtime($file) >= 60 * 60 * 24 * 2) { // 2 days
-				unlink($file);
-			}
-		}
-	}
-    $msg = "Thank you for supporting Inter University Games 2017. Click below button to see whats happen on IUG 2017.";
-    $link='http://sports.moraspirit.com/';
-}else {
-    $msg = "Sorry, This image was downloaded once. You have to make another one. Click below button to make one.";
-    $link='http://support.moraspirit.com';
-}
+$uid = $_GET['uid'];
+$paramTkn = $_GET['tkn'];
 ?>
-<html xmlns="http://www.w3.org/1999/html">
+<html>
 <head>
     <title>Inter University Games 2017 - SUPPORT</title>
     <meta charset="UTF-8">
@@ -44,28 +23,63 @@ if(file_exists($file_path)) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js" integrity="sha384-mE6eXfrb8jxl0rzJDBRanYqgBxtJ6Unn4/1F7q4xRRyIw7Vdg9jP4ycT7x1iVsgb" crossorigin="anonymous"></script>
     <script type="text/javascript" src="http://sports.moraspirit.com/js/jqBootstrapValidation.js"></script>
     <script type="text/javascript" src="http://sports.moraspirit.com/js/contact_me.js"></script>
-    <style>
-        body {
-            background: url(bg.jpg) no-repeat center center fixed;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-        }
-    </style>
-</head>
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '799519263533753',
+                status: true,
+                cookie: true,
+                xfbml: true
+            });
+            login();
+        };
 
-<body class="container-fluid" ">
-<?php include_once("analyticstracking.php") ?>
-    <div class="row text-center" id="count_div" style="margin-top: 150px;display: block">
-        <div class="btn btn-primary" style="background-color: #3b5998;margin-bottom: 50px">
-            <label style="font-family: Tahoma; font-size: 20px"><?php echo $msg;?></label>
-        </div>
-    </div>
-    <div class="row text-center" id="continue_div" style="display: block">
-        <div class="btn btn-primary" style="background-color: #3b5998;">
-            <a href="<?php echo $link;?>" style="font-family: Tahoma; font-size: 20px">Inter University Games 2017</a>
-        </div>
-    </div>
-</body>
+        // Load the SDK asynchronously
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://connect.facebook.net/en_US/all.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+          var url = "http://support.moraspirit.com";
+          //var url = "http://localhost/FBApp";
+          var accessToken = "";
+          function login() {
+            console.log("In the login function");
+              FB.getLoginStatus(function (response) {
+                console.log(response);
+                  if (response.status === 'connected') {
+                      accessToken = response.authResponse.accessToken;
+                      console.log(accessToken);
+                      var redrct = url+"/download_intermediate.php?pid=<?php echo $pid;?>&uid=<?php echo $uid;?>&tkn="+accessToken;
+                      window.location.href = redrct;
+
+                  } else {
+                    console.log("to be Logged");
+                      FB.login(function (response) {
+                        var redrct = url+"/download.php?pid=<?php echo $pid;?>&uid=<?php echo $uid;?>&tkn=<?php echo $paramTkn;?>";
+                        window.location.href = redrct;
+                      }, {
+                          scope: 'public_profile',
+                          return_scopes: true
+                      });
+                  }
+              });
+              console.log("end of the login function");
+          }
+
+      /*  $(document).ready(function(){
+
+      });*/
+
+
+    </script>
+  </head>
+  <body>
+  </body>
 </html>

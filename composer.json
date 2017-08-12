@@ -1,7 +1,6 @@
 {
   "require" : {
     "facebook/graph-sdk" : "~5.0",
-    "kraken-io/kraken-php": "^1.2",
     "eventviva/php-image-resize": "1.6.*"
   }
 }

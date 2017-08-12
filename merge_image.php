@@ -3,14 +3,16 @@
 $uni = $_POST['uni'];
 json_decode($uni);
 
+$param_uid = $_POST['uid'];
+json_decode($param_uid);
+
 //$uid = $_POST['uid'];
 $uid = rand(100000,9999999);
-json_decode($uid);
 
-$size = getimagesize('./input/input.jpeg');
+$size = getimagesize('./input/input'.$param_uid.'.jpeg');
 $width = $size[0];
 $height = $size[1];
-$dest = imagecreatefromjpeg('./input/input.jpeg');
+$dest = imagecreatefromjpeg('./input/input'.$param_uid.'.jpeg');
 $src = imagecreatefromgif('./frames/'.$uni.'.gif');
 
 //Copy and merge
@@ -25,7 +27,7 @@ imagejpeg($dest, './output/output'.$uid.'.jpeg');
 imagedestroy($dest);
 imagedestroy($src);
 
-$path_parts = pathinfo('./output/output.jpeg');
+$path_parts = pathinfo('./output/output'.$uid.'.jpeg');
 
 $file_path = $path_parts['dirname']."/".$path_parts['basename'];
 

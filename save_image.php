@@ -1,10 +1,12 @@
 <?php
 //require_once("vendor/kraken-io/kraken-php/lib/Kraken.php");
+$uid = $_POST['uid'];
+json_decode($uid);
 
 $data = $_POST['url'];
 json_decode($data);
 
-copy($data, './input/input.jpeg');
+copy($data, './input/input'.$uid.'.jpeg');
 //file_put_contents("./input/input.jpeg",file_get_contents($data));
 
 /*
@@ -35,8 +37,8 @@ echo $data;
 */
 include 'vendor/eventviva/php-image-resize/lib/ImageResize.php';
 use \Eventviva\ImageResize;
-$image = new ImageResize('./input/input.jpeg');
+$image = new ImageResize('./input/input'.$uid.'.jpeg');
 $image->resize(720, 720, $allow_enlarge = True);
-$image->save('./input/input.jpeg');
+$image->save('./input/input'.$uid.'.jpeg');
 
 echo "Image resized and saved";
